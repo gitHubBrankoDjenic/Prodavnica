@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bussinesService.LoginMetode;
+
 /**
  * Servlet implementation class LoginServlet
  */
@@ -23,7 +25,13 @@ public class LoginServlet extends HttpServlet {
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
 		
+		LoginMetode metode = new LoginMetode ();
 		
+		if (metode.daLiPostojiUser(userName)) {
+			
+		}else {
+			response.sendRedirect("loginError.html");
+		}
 	}
 
 }
