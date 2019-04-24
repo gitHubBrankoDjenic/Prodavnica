@@ -87,5 +87,41 @@ public class LoginMetode {
 		}
 		
 	}
+	
+	public User vratiUsera(String userName, String password) {
+		
+		User user = null;
+		Session session = sf.openSession();
+		session.beginTransaction();
+		
+		try {
+			String hql = "from user where userName = :x and password = :y";
+			Query query = session.createQuery(hql);
+			
+			query.setParameter("x", userName);
+			query.setParameter("y", password);
+			
+			List<User> listOfUsers = new ArrayList<User>();
+			
+			listOfUsers = query.getResultList();
+			
+			if (listOfUsers.size() !=0 ) {
+				user = listOfUsers.get(0);
+			}else {
+				user = null;
+			}				
+			session.getTransaction().commit();
+			return user;		
+		}catch (Exception e) {
+			
+			session.getTransaction().rollback();
+			System.out.println("Neuspela transakcija");
+			return null;
+			
+		}finally {
+			session.close();
+		}
+		
+	}
 
 }
