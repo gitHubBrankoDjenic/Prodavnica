@@ -14,10 +14,11 @@ import model.User;
 public class LoginMetode {
 	
 	private SessionFactory sf = new Configuration().configure().buildSessionFactory();
-	private Session session = sf.openSession();
+	
 	
 	public boolean daLiPostojiUser(String userName) {
 		
+		Session session = sf.openSession();
 		session.beginTransaction();
 		
 		try {
@@ -51,6 +52,40 @@ public class LoginMetode {
 		
 	}
 	
-	
+	public boolean daLiJeDobarPassword(String userName, String password) {
+		
+		Session session = sf.openSession();
+		boolean b = true;
+		
+		session.beginTransaction();
+		
+		try {
+			Query query = session.createQuery("Select password FROM User WHERE userName = :Name");
+			query.setParameter("Name", userName);
+			
+			List<String> listOfPasswords = new ArrayList<String>();
+			
+			listOfPasswords = query.getResultList();
+			
+			for (String s:listOfPasswords) {
+				if (s.equals(password)) {
+					b = true;
+				}else {
+					b = false;
+				}
+			}
+			session.getTransaction().commit();
+			return b;		
+		}catch (Exception e) {
+			
+			session.getTransaction().rollback();
+			System.out.println("Neuspela transakcija");
+			return false;
+			
+		}finally {
+			session.close();
+		}
+		
+	}
 
 }

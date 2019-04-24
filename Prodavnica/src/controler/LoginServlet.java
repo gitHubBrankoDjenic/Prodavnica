@@ -29,6 +29,14 @@ public class LoginServlet extends HttpServlet {
 		
 		if (metode.daLiPostojiUser(userName)) {
 			
+			if (metode.daLiJeDobarPassword(userName, password)) {
+				
+				
+				
+			}else {
+				response.sendRedirect("loginError.html");
+			}
+			
 		}else {
 			response.sendRedirect("loginError.html");
 		}
